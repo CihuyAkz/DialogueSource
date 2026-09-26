@@ -1,19 +1,30 @@
-# SimpleDialogue NPC Generator v2
+# SimpleDialogue NPC Generator v3
 
-Single-file HTML dialogue builder for Roblox NPCs.
+Generator HTML offline untuk membuat **1 Script Roblox** yang ditempel langsung di dalam Model NPC.
 
-## What changed
-- Red-to-black gradient UI with clearer sections and steps.
-- One-script generation flow.
-- `CihuyAkz/DialogueSource` is the hardcoded source reference.
-- The uploaded `SimpleDialogue.rbxm` snapshot is embedded into the HTML as the offline baseline.
-- Source-compatible helpers are inlined into the generated Luau: `CreateOption`, `CreateNode`, `CreateAutoNode`, `CreateCondition`, and `CreateTree`.
-- Prompt highlighting, floating dialogue text, player response text, typing, branching, auto nodes, and distance cleanup are generated in the single Script.
+## Penempatan script hasil generate
 
-## Use
-Open `dialogue_generator.html` in a browser. Configure the NPC and nodes, then use **Generate 1 Script** or **Download .client.lua**.
+```text
+Workspace
+└── NPC Model
+    ├── Head
+    ├── Humanoid
+    └── DialogueScript   <-- paste hasil generate di sini
+```
 
-## Roblox
-Paste the generated Script directly inside the NPC Model and set **RunContext = Client**. The NPC needs a `Head`, `PrimaryPart`, or another `BasePart`.
+Buat **Script** biasa, lalu set:
 
-Source reference: https://github.com/CihuyAkz/DialogueSource
+- `RunContext = Client`
+- `Enabled = true`
+
+Generator sekarang menambahkan guard `RunService:IsClient()` sehingga kesalahan konfigurasi RunContext terlihat jelas di Output.
+
+## Perbaikan v3
+
+- Menghapus bug yang menambahkan `$https://github.com/CihuyAkz/DialogueSource` ke akhir Luau.
+- URL repository hanya disimpan sebagai komentar metadata.
+- Menambahkan validasi `RunContext = Client`.
+- Menghindari global `displayNode` dengan local forward declaration.
+- Menambahkan anotasi untuk reference UI optional agar lebih aman di mode `--!strict`.
+- Output download menggunakan ekstensi `.lua`.
+- Tetap memakai snapshot `SimpleDialogue.rbxm` yang sebelumnya diunggah sebagai baseline embedded/offline.
