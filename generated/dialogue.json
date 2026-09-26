@@ -1,0 +1,50 @@
+{
+  "projectName": "Village Guardian Demo",
+  "npcName": "VillageGuard",
+  "githubUrl": "",
+  "objectText": "Village Guard",
+  "actionText": "Talk",
+  "distance": 10,
+  "holdDuration": 0,
+  "textSpeed": 0.03,
+  "autoDelay": 2,
+  "npcColor": "#ffffff",
+  "buttonColor": "#2a3150",
+  "bgColor": "#11151e",
+  "uiTitle": "Conversation",
+  "showBubble": true,
+  "showPlayerBubble": true,
+  "setupCode": "",
+  "nodes": [
+    {
+      "id": 1,
+      "text": "Berhenti sebentar. Kamu mencari jalan ke hutan?",
+      "auto": false,
+      "autoNext": 0,
+      "onEnter": "",
+      "options": [
+        {"text":"Ya, ada apa?","displayText":"Ya, ada apa?","next":2,"ends":false,"action":""},
+        {"text":"Bukan urusanmu.","displayText":"Bukan urusanmu.","next":0,"ends":true,"action":""}
+      ]
+    },
+    {
+      "id": 2,
+      "text": "Jangan lewat sungai saat malam. Ada sesuatu yang muncul di sana.",
+      "auto": false,
+      "autoNext": 0,
+      "onEnter": "",
+      "options": [
+        {"text":"Sesuatu seperti apa?","displayText":"Sesuatu seperti apa?","next":3,"ends":false,"action":""},
+        {"text":"Terima kasih atas peringatannya.","displayText":"Terima kasih.","next":0,"ends":true,"action":""}
+      ]
+    },
+    {
+      "id": 3,
+      "text": "Cahaya biru. Kalau melihatnya, segera kembali ke desa.",
+      "auto": true,
+      "autoNext": 0,
+      "onEnter": "",
+      "options": []
+    }
+  ]
+}

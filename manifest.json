@@ -1,0 +1,422 @@
+{
+  "source_file": "SimpleDialogue.rbxm",
+  "header_class_count": 2,
+  "header_instance_count": 67,
+  "instances_extracted": 67,
+  "class_counts": {
+    "Folder": 13,
+    "ModuleScript": 54
+  },
+  "roots": [
+    "SimpleDialogue"
+  ],
+  "notes": [
+    "ModuleScript Source properties were exported as UTF-8 .lua files.",
+    "Folders were reconstructed from the RBXM PRNT hierarchy.",
+    "The original RBXM is included unchanged for reference."
+  ],
+  "files": [
+    {
+      "ref": 66,
+      "class": "ModuleScript",
+      "name": "SimpleDialogue",
+      "path": "SimpleDialogue.lua"
+    },
+    {
+      "ref": 1,
+      "class": "Folder",
+      "name": "Handlers",
+      "path": "Handlers"
+    },
+    {
+      "ref": 0,
+      "class": "ModuleScript",
+      "name": "ProximityPromptHandler",
+      "path": "Handlers/ProximityPromptHandler.lua"
+    },
+    {
+      "ref": 3,
+      "class": "Folder",
+      "name": "System",
+      "path": "System"
+    },
+    {
+      "ref": 2,
+      "class": "ModuleScript",
+      "name": "DialogueSystem",
+      "path": "System/DialogueSystem.lua"
+    },
+    {
+      "ref": 4,
+      "class": "ModuleScript",
+      "name": "Types",
+      "path": "Types.lua"
+    },
+    {
+      "ref": 7,
+      "class": "Folder",
+      "name": "UI",
+      "path": "UI"
+    },
+    {
+      "ref": 5,
+      "class": "ModuleScript",
+      "name": "DialogueUI",
+      "path": "UI/DialogueUI.lua"
+    },
+    {
+      "ref": 6,
+      "class": "ModuleScript",
+      "name": "FloatingTextUI",
+      "path": "UI/FloatingTextUI.lua"
+    },
+    {
+      "ref": 65,
+      "class": "Folder",
+      "name": "Packages",
+      "path": "Packages"
+    },
+    {
+      "ref": 8,
+      "class": "ModuleScript",
+      "name": "Fusion",
+      "path": "Packages/Fusion.lua"
+    },
+    {
+      "ref": 64,
+      "class": "Folder",
+      "name": "_Index",
+      "path": "Packages/_Index"
+    },
+    {
+      "ref": 63,
+      "class": "Folder",
+      "name": "elttob_fusion@0.2.0",
+      "path": "Packages/_Index/elttob_fusion@0.2.0"
+    },
+    {
+      "ref": 62,
+      "class": "ModuleScript",
+      "name": "fusion",
+      "path": "Packages/_Index/elttob_fusion@0.2.0/fusion.lua"
+    },
+    {
+      "ref": 18,
+      "class": "Folder",
+      "name": "Animation",
+      "path": "Packages/_Index/elttob_fusion@0.2.0/Animation"
+    },
+    {
+      "ref": 9,
+      "class": "ModuleScript",
+      "name": "Spring",
+      "path": "Packages/_Index/elttob_fusion@0.2.0/Animation/Spring.lua"
+    },
+    {
+      "ref": 10,
+      "class": "ModuleScript",
+      "name": "SpringScheduler",
+      "path": "Packages/_Index/elttob_fusion@0.2.0/Animation/SpringScheduler.lua"
+    },
+    {
+      "ref": 11,
+      "class": "ModuleScript",
+      "name": "Tween",
+      "path": "Packages/_Index/elttob_fusion@0.2.0/Animation/Tween.lua"
+    },
+    {
+      "ref": 12,
+      "class": "ModuleScript",
+      "name": "TweenScheduler",
+      "path": "Packages/_Index/elttob_fusion@0.2.0/Animation/TweenScheduler.lua"
+    },
+    {
+      "ref": 13,
+      "class": "ModuleScript",
+      "name": "getTweenRatio",
+      "path": "Packages/_Index/elttob_fusion@0.2.0/Animation/getTweenRatio.lua"
+    },
+    {
+      "ref": 14,
+      "class": "ModuleScript",
+      "name": "lerpType",
+      "path": "Packages/_Index/elttob_fusion@0.2.0/Animation/lerpType.lua"
+    },
+    {
+      "ref": 15,
+      "class": "ModuleScript",
+      "name": "packType",
+      "path": "Packages/_Index/elttob_fusion@0.2.0/Animation/packType.lua"
+    },
+    {
+      "ref": 16,
+      "class": "ModuleScript",
+      "name": "springCoefficients",
+      "path": "Packages/_Index/elttob_fusion@0.2.0/Animation/springCoefficients.lua"
+    },
+    {
+      "ref": 17,
+      "class": "ModuleScript",
+      "name": "unpackType",
+      "path": "Packages/_Index/elttob_fusion@0.2.0/Animation/unpackType.lua"
+    },
+    {
+      "ref": 20,
+      "class": "Folder",
+      "name": "Colour",
+      "path": "Packages/_Index/elttob_fusion@0.2.0/Colour"
+    },
+    {
+      "ref": 19,
+      "class": "ModuleScript",
+      "name": "Oklab",
+      "path": "Packages/_Index/elttob_fusion@0.2.0/Colour/Oklab.lua"
+    },
+    {
+      "ref": 26,
+      "class": "Folder",
+      "name": "Dependencies",
+      "path": "Packages/_Index/elttob_fusion@0.2.0/Dependencies"
+    },
+    {
+      "ref": 21,
+      "class": "ModuleScript",
+      "name": "captureDependencies",
+      "path": "Packages/_Index/elttob_fusion@0.2.0/Dependencies/captureDependencies.lua"
+    },
+    {
+      "ref": 22,
+      "class": "ModuleScript",
+      "name": "initDependency",
+      "path": "Packages/_Index/elttob_fusion@0.2.0/Dependencies/initDependency.lua"
+    },
+    {
+      "ref": 23,
+      "class": "ModuleScript",
+      "name": "sharedState",
+      "path": "Packages/_Index/elttob_fusion@0.2.0/Dependencies/sharedState.lua"
+    },
+    {
+      "ref": 24,
+      "class": "ModuleScript",
+      "name": "updateAll",
+      "path": "Packages/_Index/elttob_fusion@0.2.0/Dependencies/updateAll.lua"
+    },
+    {
+      "ref": 25,
+      "class": "ModuleScript",
+      "name": "useDependency",
+      "path": "Packages/_Index/elttob_fusion@0.2.0/Dependencies/useDependency.lua"
+    },
+    {
+      "ref": 37,
+      "class": "Folder",
+      "name": "Instances",
+      "path": "Packages/_Index/elttob_fusion@0.2.0/Instances"
+    },
+    {
+      "ref": 27,
+      "class": "ModuleScript",
+      "name": "Children",
+      "path": "Packages/_Index/elttob_fusion@0.2.0/Instances/Children.lua"
+    },
+    {
+      "ref": 28,
+      "class": "ModuleScript",
+      "name": "Cleanup",
+      "path": "Packages/_Index/elttob_fusion@0.2.0/Instances/Cleanup.lua"
+    },
+    {
+      "ref": 29,
+      "class": "ModuleScript",
+      "name": "Hydrate",
+      "path": "Packages/_Index/elttob_fusion@0.2.0/Instances/Hydrate.lua"
+    },
+    {
+      "ref": 30,
+      "class": "ModuleScript",
+      "name": "New",
+      "path": "Packages/_Index/elttob_fusion@0.2.0/Instances/New.lua"
+    },
+    {
+      "ref": 31,
+      "class": "ModuleScript",
+      "name": "OnChange",
+      "path": "Packages/_Index/elttob_fusion@0.2.0/Instances/OnChange.lua"
+    },
+    {
+      "ref": 32,
+      "class": "ModuleScript",
+      "name": "OnEvent",
+      "path": "Packages/_Index/elttob_fusion@0.2.0/Instances/OnEvent.lua"
+    },
+    {
+      "ref": 33,
+      "class": "ModuleScript",
+      "name": "Out",
+      "path": "Packages/_Index/elttob_fusion@0.2.0/Instances/Out.lua"
+    },
+    {
+      "ref": 34,
+      "class": "ModuleScript",
+      "name": "Ref",
+      "path": "Packages/_Index/elttob_fusion@0.2.0/Instances/Ref.lua"
+    },
+    {
+      "ref": 35,
+      "class": "ModuleScript",
+      "name": "applyInstanceProps",
+      "path": "Packages/_Index/elttob_fusion@0.2.0/Instances/applyInstanceProps.lua"
+    },
+    {
+      "ref": 36,
+      "class": "ModuleScript",
+      "name": "defaultProps",
+      "path": "Packages/_Index/elttob_fusion@0.2.0/Instances/defaultProps.lua"
+    },
+    {
+      "ref": 43,
+      "class": "Folder",
+      "name": "Logging",
+      "path": "Packages/_Index/elttob_fusion@0.2.0/Logging"
+    },
+    {
+      "ref": 38,
+      "class": "ModuleScript",
+      "name": "logError",
+      "path": "Packages/_Index/elttob_fusion@0.2.0/Logging/logError.lua"
+    },
+    {
+      "ref": 39,
+      "class": "ModuleScript",
+      "name": "logErrorNonFatal",
+      "path": "Packages/_Index/elttob_fusion@0.2.0/Logging/logErrorNonFatal.lua"
+    },
+    {
+      "ref": 40,
+      "class": "ModuleScript",
+      "name": "logWarn",
+      "path": "Packages/_Index/elttob_fusion@0.2.0/Logging/logWarn.lua"
+    },
+    {
+      "ref": 41,
+      "class": "ModuleScript",
+      "name": "messages",
+      "path": "Packages/_Index/elttob_fusion@0.2.0/Logging/messages.lua"
+    },
+    {
+      "ref": 42,
+      "class": "ModuleScript",
+      "name": "parseError",
+      "path": "Packages/_Index/elttob_fusion@0.2.0/Logging/parseError.lua"
+    },
+    {
+      "ref": 44,
+      "class": "ModuleScript",
+      "name": "PubTypes",
+      "path": "Packages/_Index/elttob_fusion@0.2.0/PubTypes.lua"
+    },
+    {
+      "ref": 52,
+      "class": "Folder",
+      "name": "State",
+      "path": "Packages/_Index/elttob_fusion@0.2.0/State"
+    },
+    {
+      "ref": 45,
+      "class": "ModuleScript",
+      "name": "Computed",
+      "path": "Packages/_Index/elttob_fusion@0.2.0/State/Computed.lua"
+    },
+    {
+      "ref": 46,
+      "class": "ModuleScript",
+      "name": "ForKeys",
+      "path": "Packages/_Index/elttob_fusion@0.2.0/State/ForKeys.lua"
+    },
+    {
+      "ref": 47,
+      "class": "ModuleScript",
+      "name": "ForPairs",
+      "path": "Packages/_Index/elttob_fusion@0.2.0/State/ForPairs.lua"
+    },
+    {
+      "ref": 48,
+      "class": "ModuleScript",
+      "name": "ForValues",
+      "path": "Packages/_Index/elttob_fusion@0.2.0/State/ForValues.lua"
+    },
+    {
+      "ref": 49,
+      "class": "ModuleScript",
+      "name": "Observer",
+      "path": "Packages/_Index/elttob_fusion@0.2.0/State/Observer.lua"
+    },
+    {
+      "ref": 50,
+      "class": "ModuleScript",
+      "name": "Value",
+      "path": "Packages/_Index/elttob_fusion@0.2.0/State/Value.lua"
+    },
+    {
+      "ref": 51,
+      "class": "ModuleScript",
+      "name": "unwrap",
+      "path": "Packages/_Index/elttob_fusion@0.2.0/State/unwrap.lua"
+    },
+    {
+      "ref": 53,
+      "class": "ModuleScript",
+      "name": "Types",
+      "path": "Packages/_Index/elttob_fusion@0.2.0/Types.lua"
+    },
+    {
+      "ref": 61,
+      "class": "Folder",
+      "name": "Utility",
+      "path": "Packages/_Index/elttob_fusion@0.2.0/Utility"
+    },
+    {
+      "ref": 54,
+      "class": "ModuleScript",
+      "name": "None",
+      "path": "Packages/_Index/elttob_fusion@0.2.0/Utility/None.lua"
+    },
+    {
+      "ref": 55,
+      "class": "ModuleScript",
+      "name": "cleanup",
+      "path": "Packages/_Index/elttob_fusion@0.2.0/Utility/cleanup.lua"
+    },
+    {
+      "ref": 56,
+      "class": "ModuleScript",
+      "name": "doNothing",
+      "path": "Packages/_Index/elttob_fusion@0.2.0/Utility/doNothing.lua"
+    },
+    {
+      "ref": 57,
+      "class": "ModuleScript",
+      "name": "isSimilar",
+      "path": "Packages/_Index/elttob_fusion@0.2.0/Utility/isSimilar.lua"
+    },
+    {
+      "ref": 58,
+      "class": "ModuleScript",
+      "name": "needsDestruction",
+      "path": "Packages/_Index/elttob_fusion@0.2.0/Utility/needsDestruction.lua"
+    },
+    {
+      "ref": 59,
+      "class": "ModuleScript",
+      "name": "restrictRead",
+      "path": "Packages/_Index/elttob_fusion@0.2.0/Utility/restrictRead.lua"
+    },
+    {
+      "ref": 60,
+      "class": "ModuleScript",
+      "name": "xtypeof",
+      "path": "Packages/_Index/elttob_fusion@0.2.0/Utility/xtypeof.lua"
+    }
+  ]
+}

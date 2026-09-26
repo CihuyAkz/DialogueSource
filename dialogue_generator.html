@@ -1,0 +1,174 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>SimpleDialogue — NPC Dialogue Generator</title>
+<style>
+:root{--bg:#0f1117;--panel:#171a22;--panel2:#1e2330;--line:#2d3443;--text:#f4f7fb;--muted:#9da7b7;--accent:#7c8cff;--good:#3ddc97;--danger:#ff6b7a;--shadow:0 18px 60px rgba(0,0,0,.3)}
+*{box-sizing:border-box} body{margin:0;background:linear-gradient(180deg,#0d1016 0,#11151e 100%);color:var(--text);font:14px/1.45 Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif} button,input,textarea,select{font:inherit}
+.app{min-height:100vh;display:grid;grid-template-columns:360px 1fr;gap:0}.sidebar{padding:18px;border-right:1px solid var(--line);background:#10131a;position:sticky;top:0;height:100vh;overflow:auto}.main{padding:22px;overflow:auto}
+h1{font-size:20px;margin:0 0 4px}.sub{color:var(--muted);margin-bottom:18px}.section{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px;margin-bottom:14px;box-shadow:var(--shadow)}
+.section h2{font-size:13px;text-transform:uppercase;letter-spacing:.08em;margin:0 0 12px;color:#c9d1de}.row{display:grid;grid-template-columns:1fr 1fr;gap:10px}.field{margin-bottom:10px}.field label{display:block;color:#c6cedb;font-size:12px;margin-bottom:5px}.field input,.field textarea,.field select{width:100%;background:#0f1218;color:var(--text);border:1px solid var(--line);border-radius:9px;padding:9px 10px;outline:none}.field textarea{min-height:74px;resize:vertical}.field input:focus,.field textarea:focus,.field select:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(124,140,255,.12)}
+.toolbar{display:flex;gap:8px;flex-wrap:wrap}.btn{border:1px solid var(--line);background:#202633;color:#fff;padding:9px 12px;border-radius:9px;cursor:pointer}.btn:hover{border-color:#52607a}.btn.primary{background:var(--accent);border-color:var(--accent);color:#0c0f15;font-weight:700}.btn.good{background:#194b3a;border-color:#2c8062}.btn.danger{background:#4c1e28;border-color:#7d3141}.btn.small{padding:6px 8px;font-size:12px}
+.header{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:16px}.header .toolbar{justify-content:flex-end}.grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(320px,520px);gap:14px}.nodes{display:flex;flex-direction:column;gap:12px}.node{background:var(--panel);border:1px solid var(--line);border-radius:14px;overflow:hidden}.node-head{display:flex;align-items:center;justify-content:space-between;padding:12px 14px;background:#191e28;border-bottom:1px solid var(--line)}.node-title{font-weight:700}.node-id{color:var(--muted);font-size:12px}.node-body{padding:14px}.options{display:flex;flex-direction:column;gap:9px}.option{border:1px solid var(--line);border-radius:11px;padding:10px;background:#141821}.option-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}.option-tag{font-size:11px;color:#cdd5e3;background:#232a38;border:1px solid var(--line);border-radius:999px;padding:3px 7px}.split{display:grid;grid-template-columns:2fr 1fr;gap:8px}.code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}.preview{position:sticky;top:22px}.previewBox{background:#0e1117;border:1px solid var(--line);border-radius:14px;padding:14px;min-height:350px}.npcbubble,.playerbubble{max-width:88%;padding:11px 12px;border-radius:14px;margin-bottom:10px;white-space:pre-wrap}.npcbubble{background:#252b38}.playerbubble{background:#39416a;margin-left:auto}.choicePreview{margin-top:14px;display:grid;gap:8px}.choicePreview button{padding:10px;border:1px solid var(--line);background:#191e28;color:#fff;border-radius:9px;text-align:left;cursor:pointer}.choicePreview button:hover{border-color:#7484c9}.output{width:100%;min-height:480px;background:#0b0e13;color:#dce6f5;border:1px solid var(--line);border-radius:12px;padding:14px;font:12px/1.55 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;white-space:pre;overflow:auto}.muted{color:var(--muted)}.hint{font-size:12px;color:var(--muted);margin-top:6px}.toggle{display:flex;align-items:center;gap:8px}.toggle input{width:auto}.empty{padding:26px;border:1px dashed var(--line);border-radius:14px;text-align:center;color:var(--muted)}
+@media (max-width:1050px){.app{grid-template-columns:1fr}.sidebar{position:relative;height:auto;border-right:0;border-bottom:1px solid var(--line)}.grid{grid-template-columns:1fr}.preview{position:relative;top:0}}
+</style>
+</head>
+<body>
+<div class="app">
+<aside class="sidebar">
+  <h1>SimpleDialogue Generator</h1>
+  <div class="sub">Generator dialog NPC berbasis pola source SimpleDialogue, tetapi hasilnya self-contained.</div>
+  <div class="section">
+    <h2>Project</h2>
+    <div class="field"><label>Project name</label><input id="projectName" value="My NPC Dialogue"></div>
+    <div class="field"><label>NPC model name</label><input id="npcName" value="GuideNPC"></div>
+    <div class="field"><label>GitHub source URL (opsional, komentar saja)</label><input id="githubUrl" placeholder="https://github.com/user/repo"></div>
+  </div>
+  <div class="section">
+    <h2>Proximity Prompt</h2>
+    <div class="row">
+      <div class="field"><label>ObjectText</label><input id="objectText" value="Talk"></div>
+      <div class="field"><label>ActionText</label><input id="actionText" value="Talk"></div>
+      <div class="field"><label>Activation distance</label><input id="distance" type="number" min="1" step="1" value="10"></div>
+      <div class="field"><label>Hold duration</label><input id="holdDuration" type="number" min="0" step="0.1" value="0"></div>
+    </div>
+  </div>
+  <div class="section">
+    <h2>Dialogue / UI</h2>
+    <div class="row">
+      <div class="field"><label>Text speed (sec/char)</label><input id="textSpeed" type="number" min="0" step="0.01" value="0.03"></div>
+      <div class="field"><label>Auto advance delay</label><input id="autoDelay" type="number" min="0" step="0.1" value="2"></div>
+      <div class="field"><label>NPC text color</label><input id="npcColor" value="#ffffff"></div>
+      <div class="field"><label>Button color</label><input id="buttonColor" value="#2a3150"></div>
+      <div class="field"><label>Background color</label><input id="bgColor" value="#11151e"></div>
+      <div class="field"><label>UI title</label><input id="uiTitle" value="Conversation"></div>
+    </div>
+    <div class="toggle"><input id="showBubble" type="checkbox" checked><label for="showBubble">Show NPC floating bubble</label></div>
+    <div class="toggle"><input id="showPlayerBubble" type="checkbox" checked><label for="showPlayerBubble">Show player response bubble</label></div>
+  </div>
+  <div class="section">
+    <h2>Advanced</h2>
+    <div class="field"><label>Run once before dialogue (Luau, optional)</label><textarea id="setupCode" class="code" placeholder="-- contoh:\nlocal Players = game:GetService(\"Players\")"></textarea></div>
+    <div class="hint">Script hasil harus memakai RunContext = Client. Tempel sebagai Script di dalam Model NPC.</div>
+  </div>
+  <div class="toolbar">
+    <button class="btn" id="exampleBtn">Load example</button>
+    <button class="btn" id="saveJsonBtn">Save JSON</button>
+    <button class="btn" id="loadJsonBtn">Load JSON</button>
+    <input id="loadJsonFile" type="file" accept="application/json" hidden>
+  </div>
+</aside>
+<main class="main">
+  <div class="header">
+    <div><h1>Dialogue Tree</h1><div class="sub">Node = ucapan NPC. Option = respons pemain dan tujuan node berikutnya.</div></div>
+    <div class="toolbar"><button class="btn" id="addNodeBtn">+ Add node</button><button class="btn primary" id="generateBtn">Generate Luau</button><button class="btn good" id="downloadBtn">Download Script</button></div>
+  </div>
+  <div class="grid">
+    <div>
+      <div id="nodes" class="nodes"></div>
+      <div style="height:12px"></div>
+      <button class="btn" id="addNodeBottom">+ Add node</button>
+    </div>
+    <section class="preview">
+      <div class="section"><h2>Preview</h2><div id="preview" class="previewBox"></div></div>
+      <div class="section"><h2>Generated Script</h2><div class="toolbar" style="margin-bottom:10px"><button class="btn small" id="copyBtn">Copy</button><button class="btn small" id="downloadReadmeBtn">README</button><span id="status" class="muted"></span></div><textarea id="output" class="output" readonly></textarea></div>
+    </section>
+  </div>
+</main>
+</div>
+<script>
+const $ = s => document.querySelector(s);
+const el = (tag, cls, parent) => { const x=document.createElement(tag); if(cls)x.className=cls; if(parent)parent.appendChild(x); return x; };
+let state = {
+  projectName:'My NPC Dialogue', npcName:'GuideNPC', githubUrl:'', objectText:'Talk', actionText:'Talk', distance:10, holdDuration:0,
+  textSpeed:.03, autoDelay:2, npcColor:'#ffffff', buttonColor:'#2a3150', bgColor:'#11151e', uiTitle:'Conversation', showBubble:true, showPlayerBubble:true, setupCode:'',
+  nodes:[
+    {id:1,text:'Halo! Ada yang bisa saya bantu?',auto:false,autoNext:0,onEnter:'',options:[{text:'Siapa kamu?',displayText:'Siapa kamu?',next:2,ends:false,action:''},{text:'Sampai jumpa.',displayText:'Sampai jumpa.',next:0,ends:true,action:''}]},
+    {id:2,text:'Aku penjaga desa ini. Ada rumor aneh di hutan.',auto:false,autoNext:0,onEnter:'',options:[{text:'Rumor apa?',displayText:'Rumor apa?',next:3,ends:false,action:''},{text:'Oke, terima kasih.',displayText:'Oke, terima kasih.',next:0,ends:true,action:''}]},
+    {id:3,text:'Katanya ada cahaya muncul setiap malam dekat sungai.',auto:true,autoNext:0,onEnter:'',options:[]}
+  ]
+};
+let generated='';
+const lua = s => JSON.stringify(String(s ?? '')).replace(/</g,'\\u003c');
+const num = v => { const n=Number(v); return Number.isFinite(n)?n:0; };
+const bool = v => !!v;
+function rebuildIds(){ state.nodes.forEach((n,i)=>n.id=i+1); }
+function nodeById(id){ return state.nodes.find(n=>n.id===Number(id)); }
+function render(){
+  rebuildIds(); const root=$('#nodes'); root.innerHTML='';
+  if(!state.nodes.length){ root.innerHTML='<div class="empty">Belum ada node. Tekan Add node.</div>'; return; }
+  state.nodes.forEach((node,ni)=>{
+    const card=el('div','node',root), head=el('div','node-head',card), body=el('div','node-body',card);
+    const title=el('div',null,head); title.innerHTML='<div class="node-title">Node '+node.id+'</div><div class="node-id">NPC line '+(ni+1)+'</div>';
+    const actions=el('div','toolbar',head);
+    const up=el('button','btn small',actions); up.textContent='↑'; up.onclick=()=>{ if(ni>0){[state.nodes[ni-1],state.nodes[ni]]=[state.nodes[ni],state.nodes[ni-1]]; render();} };
+    const down=el('button','btn small',actions); down.textContent='↓'; down.onclick=()=>{ if(ni<state.nodes.length-1){[state.nodes[ni+1],state.nodes[ni]]=[state.nodes[ni],state.nodes[ni+1]]; render();} };
+    const del=el('button','btn small danger',actions); del.textContent='Delete'; del.onclick=()=>{ if(state.nodes.length>1){state.nodes.splice(ni,1); state.nodes.forEach(n=>n.options.forEach(o=>{if(o.next===node.id)o.next=0;})); render(); } };
+    const f1=el('div','field',body); f1.innerHTML='<label>NPC text</label>'; const ta=el('textarea',null,f1); ta.value=node.text; ta.oninput=()=>{node.text=ta.value; preview();};
+    const r=el('div','row',body);
+    const af=el('div','field',r); af.innerHTML='<label>Node mode</label>'; const sel=document.createElement('select'); sel.innerHTML='<option value="false">Choices</option><option value="true">Auto advance</option>'; sel.value=String(!!node.auto); af.appendChild(sel); sel.onchange=()=>{node.auto=sel.value==='true'; render();};
+    const nf=el('div','field',r); nf.innerHTML='<label>Auto next (0 = end)</label>'; const ni2=document.createElement('input'); ni2.type='number'; ni2.min='0'; ni2.value=node.autoNext||0; nf.appendChild(ni2); ni2.oninput=()=>{node.autoNext=num(ni2.value); preview();};
+    const oc=el('div','field',body); oc.innerHTML='<label>On enter code (optional Luau)</label>'; const otc=el('textarea','code',oc); otc.value=node.onEnter||''; otc.placeholder='-- runs when this node opens'; otc.oninput=()=>node.onEnter=otc.value;
+    if(!node.auto){
+      const oh=el('div','option-head',body); const lab=el('div',null,oh); lab.innerHTML='<b>Player responses</b>'; const add=el('button','btn small',oh); add.textContent='+ Add response'; add.onclick=()=>{node.options.push({text:'',displayText:'',next:0,ends:true,action:''}); render();};
+      const opts=el('div','options',body);
+      node.options.forEach((opt,oi)=>{
+        const box=el('div','option',opts), oh2=el('div','option-head',box); const tag=el('span','option-tag',oh2); tag.textContent='Response '+(oi+1); const rb=el('button','btn small danger',oh2); rb.textContent='Remove'; rb.onclick=()=>{node.options.splice(oi,1);render();};
+        const t=el('div','field',box); t.innerHTML='<label>Player response</label>'; const ti=el('input',null,t); ti.value=opt.text||''; ti.oninput=()=>{opt.text=ti.value;if(!opt.displayText)opt.displayText=ti.value;preview();};
+        const sp=el('div','split',box);
+        const dt=el('div','field',sp); dt.innerHTML='<label>Display text (bubble)</label>'; const di=el('input',null,dt); di.value=opt.displayText||''; di.oninput=()=>{opt.displayText=di.value;preview();};
+        const nx=el('div','field',sp); nx.innerHTML='<label>Next node</label>'; const ns=document.createElement('select'); ns.innerHTML='<option value="0">End dialogue</option>'+state.nodes.map(n=>`<option value="${n.id}">Node ${n.id}</option>`).join(''); ns.value=String(opt.next||0); nx.appendChild(ns); ns.onchange=()=>{opt.next=Number(ns.value);opt.ends=opt.next===0;preview();};
+        const ac=el('div','field',box); ac.innerHTML='<label>Action code after selection (optional Luau)</label>'; const at=el('textarea','code',ac); at.value=opt.action||''; at.oninput=()=>opt.action=at.value;
+      });
+    } else {
+      const hint=el('div','hint',body); hint.textContent='Node otomatis menunggu delay lalu pindah ke Next node.';
+    }
+  });
+  preview();
+}
+function preview(){
+  const p=$('#preview'); p.innerHTML=''; const n=state.nodes[0]||{text:'',options:[]};
+  const b=el('div','npcbubble',p); b.textContent=n.text||'(empty)'; b.style.color=state.npcColor;
+  const name=el('div','muted',p); name.textContent=state.npcName+' • Node 1';
+  if(!n.auto){ const cp=el('div','choicePreview',p); n.options.forEach(o=>{const x=el('button',null,cp);x.textContent=o.text||'(response)';x.style.background=state.buttonColor; x.onclick=()=>{const target=nodeById(o.next);if(o.next===0){name.textContent='Dialogue ends';return;} b.textContent=target?.text||'';name.textContent=state.npcName+' • Node '+o.next; cp.innerHTML=''; (target?.options||[]).forEach(oo=>{const y=el('button',null,cp);y.textContent=oo.text||'(response)';y.style.background=state.buttonColor;});};}); }
+}
+function pullForm(){
+ state.projectName=$('#projectName').value.trim()||'My NPC Dialogue';state.npcName=$('#npcName').value.trim()||'NPC';state.githubUrl=$('#githubUrl').value.trim();state.objectText=$('#objectText').value;state.actionText=$('#actionText').value;state.distance=num($('#distance').value);state.holdDuration=num($('#holdDuration').value);state.textSpeed=num($('#textSpeed').value);state.autoDelay=num($('#autoDelay').value);state.npcColor=$('#npcColor').value;state.buttonColor=$('#buttonColor').value;state.bgColor=$('#bgColor').value;state.uiTitle=$('#uiTitle').value;state.showBubble=$('#showBubble').checked;state.showPlayerBubble=$('#showPlayerBubble').checked;state.setupCode=$('#setupCode').value;
+}
+function syncForm(){
+ $('#projectName').value=state.projectName;$('#npcName').value=state.npcName;$('#githubUrl').value=state.githubUrl;$('#objectText').value=state.objectText;$('#actionText').value=state.actionText;$('#distance').value=state.distance;$('#holdDuration').value=state.holdDuration;$('#textSpeed').value=state.textSpeed;$('#autoDelay').value=state.autoDelay;$('#npcColor').value=state.npcColor;$('#buttonColor').value=state.buttonColor;$('#bgColor').value=state.bgColor;$('#uiTitle').value=state.uiTitle;$('#showBubble').checked=state.showBubble;$('#showPlayerBubble').checked=state.showPlayerBubble;$('#setupCode').value=state.setupCode;
+}
+function hex6(v){return String(v||'').trim().replace(/^#/,'').padStart(6,'0').slice(0,6);}
+function generate(){
+ pullForm(); rebuildIds();
+ const config=`local CONFIG = {\n  ObjectText = ${lua(state.objectText)},\n  ActionText = ${lua(state.actionText)},\n  MaxActivationDistance = ${num(state.distance)},\n  HoldDuration = ${num(state.holdDuration)},\n  TextSpeed = ${num(state.textSpeed)},\n  AutoAdvanceDelay = ${num(state.autoDelay)},\n  NPCName = ${lua(state.npcName)},\n  UITitle = ${lua(state.uiTitle)},\n  NPCColor = Color3.fromHex(${lua(hex6(state.npcColor))}),\n  ButtonColor = Color3.fromHex(${lua(hex6(state.buttonColor))}),\n  BackgroundColor = Color3.fromHex(${lua(hex6(state.bgColor))}),\n  ShowNPCBubble = ${bool(state.showBubble)},\n  ShowPlayerBubble = ${bool(state.showPlayerBubble)},\n}\n`;
+ let data='local DIALOGUE = {\n';
+ state.nodes.forEach(n=>{
+   data+=`  [${n.id}] = {\n    text = ${lua(n.text)},\n    autoAdvance = ${bool(n.auto)},\n    autoNext = ${num(n.autoNext||0)},\n`;
+   if(n.onEnter&&n.onEnter.trim()) data+=`    onEnter = function()\n${indent(n.onEnter,6)}\n    end,\n`;
+   if(n.auto){ data+='    options = {},\n'; } else {
+     data+='    options = {\n'; n.options.forEach(o=>{ data+=`      { text = ${lua(o.text)}, displayText = ${lua(o.displayText||o.text)}, next = ${num(o.next||0)},\n` + (o.action&&o.action.trim()?`        action = function()\n${indent(o.action,10)}\n        end,\n`:'') + '      },\n'; }); data+='    },\n';
+   }
+   data+='  },\n';
+ }); data+='}\n';
+ const setup=state.setupCode.trim()?`-- Optional setup code\ndo\n${indent(state.setupCode,2)}\nend\n\n`:'';
+ generated=`-- ${state.projectName}\n-- SimpleDialogue self-contained NPC generator\n-- Paste this into a Script under the NPC Model.\n-- IMPORTANT: set Script.RunContext = Client in Studio Properties.\n${state.githubUrl?`-- Source/reference: ${state.githubUrl}\n`:''}-- No external packages required.\n\n${config}\n${data}\n${setup}\nlocal Players = game:GetService("Players")\nlocal TweenService = game:GetService("TweenService")\nlocal player = Players.LocalPlayer\nlocal npc = script.Parent\nassert(npc and npc:IsA("Model"), "Dialogue Script must be parented to the NPC Model")\n\nlocal promptParent = npc:FindFirstChild("Head") or npc.PrimaryPart or npc:FindFirstChildWhichIsA("BasePart")\nassert(promptParent and promptParent:IsA("BasePart"), "NPC needs a Head, PrimaryPart, or BasePart")\n\nlocal prompt = promptParent:FindFirstChild("DialoguePrompt") or Instance.new("ProximityPrompt")\nprompt.Name = "DialoguePrompt"\nprompt.ObjectText = CONFIG.ObjectText\nprompt.ActionText = CONFIG.ActionText\nprompt.MaxActivationDistance = CONFIG.MaxActivationDistance\nprompt.HoldDuration = CONFIG.HoldDuration\nprompt.RequiresLineOfSight = false\nprompt.Parent = promptParent\n\nlocal screenGui = Instance.new("ScreenGui")\nscreenGui.Name = "SimpleDialogueUI"\nscreenGui.ResetOnSpawn = false\nscreenGui.IgnoreGuiInset = true\nscreenGui.Parent = player:WaitForChild("PlayerGui")\n\nlocal panel = Instance.new("Frame")\npanel.Name = "DialoguePanel"\npanel.AnchorPoint = Vector2.new(.5,1)\npanel.Position = UDim2.fromScale(.5,.95)\npanel.Size = UDim2.fromScale(.62,.28)\npanel.BackgroundColor3 = CONFIG.BackgroundColor\npanel.BackgroundTransparency = .08\npanel.BorderSizePixel = 0\npanel.Visible = false\npanel.Parent = screenGui\nlocal corner = Instance.new("UICorner"); corner.CornerRadius = UDim.new(0,16); corner.Parent = panel\nlocal stroke = Instance.new("UIStroke"); stroke.Transparency = .5; stroke.Parent = panel\n\nlocal title = Instance.new("TextLabel")\ntitle.BackgroundTransparency=1; title.Position=UDim2.fromOffset(18,10); title.Size=UDim2.new(1,-36,0,22); title.Font=Enum.Font.GothamBold; title.TextSize=15; title.TextXAlignment=Enum.TextXAlignment.Left; title.TextColor3=CONFIG.NPCColor; title.Text=CONFIG.UITitle; title.Parent=panel\nlocal npcLabel = Instance.new("TextLabel")\nnpcLabel.BackgroundTransparency=1; npcLabel.Position=UDim2.fromOffset(18,34); npcLabel.Size=UDim2.new(1,-36,0,22); npcLabel.Font=Enum.Font.GothamBold; npcLabel.TextSize=14; npcLabel.TextXAlignment=Enum.TextXAlignment.Left; npcLabel.TextColor3=CONFIG.NPCColor; npcLabel.Text=CONFIG.NPCName; npcLabel.Parent=panel\nlocal line = Instance.new("TextLabel")\nline.BackgroundTransparency=1; line.Position=UDim2.fromOffset(18,60); line.Size=UDim2.new(1,-36,0,52); line.Font=Enum.Font.Gotham; line.TextSize=17; line.TextWrapped=true; line.TextXAlignment=Enum.TextXAlignment.Left; line.TextYAlignment=Enum.TextYAlignment.Top; line.TextColor3=Color3.fromRGB(245,247,250); line.Parent=panel\nlocal optionsFrame = Instance.new("ScrollingFrame")\noptionsFrame.BackgroundTransparency=1; optionsFrame.BorderSizePixel=0; optionsFrame.Position=UDim2.fromOffset(18,116); optionsFrame.Size=UDim2.new(1,-36,1,-132); optionsFrame.CanvasSize=UDim2.fromScale(0,0); optionsFrame.ScrollBarThickness=4; optionsFrame.Parent=panel\nlocal layout = Instance.new("UIListLayout"); layout.Padding=UDim.new(0,7); layout.Parent=optionsFrame\nlocal padding = Instance.new("UIPadding"); padding.PaddingBottom=UDim.new(0,6); padding.Parent=optionsFrame\n\nlocal bubble, bubbleText\nlocal playerBubble, playerBubbleText\nlocal activeNode = nil\nlocal active = false\nlocal typingToken = 0\n\nlocal function makeBubble(adornee, name, textColor)\n  local b = Instance.new("BillboardGui")\n  b.Name=name; b.Size=UDim2.fromOffset(360,88); b.StudsOffset=Vector3.new(0,4.4,0); b.AlwaysOnTop=true; b.Enabled=false; b.Adornee=adornee; b.Parent=screenGui\n  local f=Instance.new("Frame"); f.Size=UDim2.fromScale(1,1); f.BackgroundColor3=CONFIG.BackgroundColor; f.BackgroundTransparency=.08; f.BorderSizePixel=0; f.Parent=b\n  local c=Instance.new("UICorner"); c.CornerRadius=UDim.new(0,12); c.Parent=f\n  local t=Instance.new("TextLabel"); t.BackgroundTransparency=1; t.Position=UDim2.fromOffset(12,10); t.Size=UDim2.new(1,-24,1,-20); t.Font=Enum.Font.Gotham; t.TextSize=15; t.TextWrapped=true; t.TextColor3=textColor; t.TextXAlignment=Enum.TextXAlignment.Left; t.TextYAlignment=Enum.TextYAlignment.Top; t.Parent=f\n  return b,t\nend\nif CONFIG.ShowNPCBubble then bubble,bubbleText=makeBubble(promptParent,"NPCDialogueBubble",CONFIG.NPCColor) end\n\nlocal function getCharacterPart()\n  local c=player.Character; return c and (c:FindFirstChild("Head") or c:FindFirstChild("HumanoidRootPart"))\nend\nlocal function ensurePlayerBubble()\n  if CONFIG.ShowPlayerBubble and not playerBubble then local part=getCharacterPart(); if part then playerBubble,playerBubbleText=makeBubble(part,"PlayerDialogueBubble",Color3.fromRGB(255,255,255)); playerBubble.StudsOffset=Vector3.new(0,3.6,0) end end\nend\nlocal function clearOptions()\n  for _,v in ipairs(optionsFrame:GetChildren()) do if v:IsA("TextButton") then v:Destroy() end end\nend\nlocal function showPlayerText(text)\n  ensurePlayerBubble(); if playerBubble and playerBubbleText then playerBubbleText.Text=text; playerBubble.Enabled=true; task.delay(2,function() if playerBubble then playerBubble.Enabled=false end end) end\nend\nlocal function typeText(text, onDone)\n  typingToken+=1; local token=typingToken; line.Text=""; if bubbleText then bubbleText.Text="" end\n  for i=1,#text do if token~=typingToken then return end local part=string.sub(text,1,i); line.Text=part; if bubbleText then bubbleText.Text=part end; task.wait(CONFIG.TextSpeed) end\n  if onDone then onDone() end\nend\nlocal function endDialogue()\n  active=false; activeNode=nil; typingToken+=1; panel.Visible=false; clearOptions(); if bubble then bubble.Enabled=false end; if playerBubble then playerBubble.Enabled=false end\nend\nlocal function runAction(fn) if fn then task.spawn(fn) end end\nlocal function displayNode(id)\n  if not active then return end\n  if id==0 or not DIALOGUE[id] then endDialogue(); return end\n  activeNode=DIALOGUE[id]; panel.Visible=true; clearOptions(); runAction(activeNode.onEnter)\n  typeText(activeNode.text or "", function()\n    if not active then return end\n    if activeNode.autoAdvance then\n      task.delay(CONFIG.AutoAdvanceDelay,function() if active and activeNode==DIALOGUE[id] then displayNode(activeNode.autoNext or 0) end end)\n      return\n    end\n    for _,opt in ipairs(activeNode.options or {}) do\n      local btn=Instance.new("TextButton")\n      btn.AutoButtonColor=true; btn.BackgroundColor3=CONFIG.ButtonColor; btn.BackgroundTransparency=.05; btn.Size=UDim2.new(1,-4,0,34); btn.Text=opt.text or "Continue"; btn.Font=Enum.Font.GothamMedium; btn.TextSize=14; btn.TextColor3=Color3.fromRGB(255,255,255); btn.TextXAlignment=Enum.TextXAlignment.Left; btn.Parent=optionsFrame\n      local pc=Instance.new("UICorner"); pc.CornerRadius=UDim.new(0,9); pc.Parent=btn\n      local pp=Instance.new("UIPadding"); pp.PaddingLeft=UDim.new(0,11); pp.PaddingRight=UDim.new(0,11); pp.Parent=btn\n      btn.Activated:Connect(function()\n        if not active then return end\n        local reply=opt.displayText or opt.text or ""; if reply~="" then showPlayerText(reply) end\n        runAction(opt.action); clearOptions(); task.wait(.08); if opt.next and opt.next~=0 then displayNode(opt.next) else endDialogue() end\n      end)\n    end\n    optionsFrame.CanvasSize=UDim2.fromOffset(0,layout.AbsoluteContentSize.Y+8)\n  end)\nend\n\nprompt.Triggered:Connect(function(triggeringPlayer)\n  if triggeringPlayer and triggeringPlayer~=player then return end\n  if active then return end\n  active=true; displayNode(1)\nend)\n\n-- End conversation when the player walks too far away.\ntask.spawn(function()\n  while script.Parent do\n    task.wait(.2)\n    if active and promptParent then\n      local c=player.Character; local root=c and c:FindFirstChild("HumanoidRootPart")\n      if root and (root.Position-promptParent.Position).Magnitude > CONFIG.MaxActivationDistance + 5 then endDialogue() end\n    end\n  end\nend)\n`;
+ $('#output').value=generated; $('#status').textContent='Generated '+generated.length.toLocaleString()+' chars';
+}
+function indent(s,n){ const pad=' '.repeat(n); return String(s).split('\n').map(x=>pad+x).join('\n'); }
+function saveJson(){ pullForm(); const blob=new Blob([JSON.stringify(state,null,2)],{type:'application/json'}); downloadBlob(blob,(state.projectName||'dialogue').replace(/[^a-z0-9-_]+/gi,'_')+'.json'); }
+function downloadBlob(blob,name){const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=name;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(a.href),500);}
+$('#addNodeBtn').onclick=$('#addNodeBottom').onclick=()=>{rebuildIds();state.nodes.push({id:state.nodes.length+1,text:'New NPC line',auto:false,autoNext:0,onEnter:'',options:[{text:'Continue',displayText:'Continue',next:0,ends:true,action:''}]});render();};
+$('#generateBtn').onclick=generate; $('#downloadBtn').onclick=()=>{generate();downloadBlob(new Blob([generated],{type:'text/plain'}),(state.projectName||'NPC_Dialogue').replace(/[^a-z0-9-_]+/gi,'_')+'.client.lua');};
+$('#copyBtn').onclick=async()=>{generate();try{await navigator.clipboard.writeText(generated);$('#status').textContent='Copied to clipboard';}catch(e){$('#output').select();document.execCommand('copy');$('#status').textContent='Copied';}};
+$('#saveJsonBtn').onclick=saveJson; $('#loadJsonBtn').onclick=()=>$('#loadJsonFile').click();
+$('#loadJsonFile').onchange=e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{try{state=JSON.parse(r.result);syncForm();render();generate();}catch(err){alert('JSON tidak valid: '+err.message)}};r.readAsText(f);};
+$('#exampleBtn').onclick=()=>{state={...state,projectName:'Village Guardian Demo',npcName:'VillageGuard',objectText:'Village Guard',actionText:'Talk',nodes:[{id:1,text:'Berhenti sebentar. Kamu mencari jalan ke hutan?',auto:false,autoNext:0,onEnter:'',options:[{text:'Ya, ada apa?',displayText:'Ya, ada apa?',next:2,ends:false,action:''},{text:'Bukan urusanmu.',displayText:'Bukan urusanmu.',next:0,ends:true,action:''}]},{id:2,text:'Jangan lewat sungai saat malam. Ada sesuatu yang muncul di sana.',auto:false,autoNext:0,onEnter:'',options:[{text:'Sesuatu seperti apa?',displayText:'Sesuatu seperti apa?',next:3,ends:false,action:''},{text:'Terima kasih atas peringatannya.',displayText:'Terima kasih.',next:0,ends:true,action:''}]},{id:3,text:'Cahaya biru. Kalau melihatnya, segera kembali ke desa.',auto:true,autoNext:0,onEnter:'',options:[]} ]};syncForm();render();generate();};
+['projectName','npcName','githubUrl','objectText','actionText','distance','holdDuration','textSpeed','autoDelay','npcColor','buttonColor','bgColor','uiTitle','setupCode'].forEach(id=>$( '#'+id).addEventListener('input',()=>{pullForm();preview();}));
+['showBubble','showPlayerBubble'].forEach(id=>$('#'+id).addEventListener('change',()=>{pullForm();preview();}));
+syncForm();render();generate();
+</script>
+</body>
+</html>
