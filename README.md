@@ -1,25 +1,19 @@
-# SimpleDialogue NPC Dialogue Generator
+# SimpleDialogue NPC Generator v2
 
-Generator HTML offline untuk membuat dialog NPC Roblox dari source `SimpleDialogue.rbxm` yang sudah diekstrak.
+Single-file HTML dialogue builder for Roblox NPCs.
 
-## Isi
-- `dialogue_generator.html` — editor node/response dan generator Luau.
-- `generated/NPC_Dialogue.client.lua` — contoh output self-contained.
-- `generated/dialogue.json` — contoh data dialog yang bisa di-load ke generator.
+## What changed
+- Red-to-black gradient UI with clearer sections and steps.
+- One-script generation flow.
+- `CihuyAkz/DialogueSource` is the hardcoded source reference.
+- The uploaded `SimpleDialogue.rbxm` snapshot is embedded into the HTML as the offline baseline.
+- Source-compatible helpers are inlined into the generated Luau: `CreateOption`, `CreateNode`, `CreateAutoNode`, `CreateCondition`, and `CreateTree`.
+- Prompt highlighting, floating dialogue text, player response text, typing, branching, auto nodes, and distance cleanup are generated in the single Script.
 
-## Cara pakai
-1. Buka `dialogue_generator.html` di browser.
-2. Buat node NPC dan response pemain.
-3. Klik **Generate Luau** lalu **Download Script**.
-4. Buat/insert sebuah `Script` di dalam Model NPC di Roblox Studio.
-5. Tempel kode hasil generator.
-6. Set `RunContext` Script menjadi **Client**.
-7. Pastikan NPC punya `Head`, `PrimaryPart`, atau BasePart lain.
+## Use
+Open `dialogue_generator.html` in a browser. Configure the NPC and nodes, then use **Generate 1 Script** or **Download .client.lua**.
 
-## Kenapa RunContext Client?
-UI tombol dialog, input `Activated`, dan PlayerGui harus diproses di client. Dengan `RunContext = Client`, satu Script bisa ditempel langsung di NPC tanpa ModuleScript/Fusion tambahan.
+## Roblox
+Paste the generated Script directly inside the NPC Model and set **RunContext = Client**. The NPC needs a `Head`, `PrimaryPart`, or another `BasePart`.
 
-## GitHub
-Folder ini dibuat GitHub-ready. Upload isi folder ini ke repository, lalu gunakan `dialogue_generator.html` sebagai GitHub Pages bila diperlukan.
-
-Generator tidak melakukan `require()` ke GitHub pada saat game berjalan. Source dibuat self-contained supaya tidak bergantung pada koneksi web saat runtime Roblox.
+Source reference: https://github.com/CihuyAkz/DialogueSource
